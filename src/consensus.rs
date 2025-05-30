@@ -75,3 +75,35 @@ async fn run_consensus_sender_loop(node: &mut RawNode<MemStorage>) {
         break;
     }
 }
+
+async fn run_consensus_receiver_loop(node: &mut RawNode<MemStorage>) {
+    loop {
+        if !node.has_ready() {
+            return;
+        }
+
+        let mut ready = node.ready();
+
+        if !ready.messages().is_empty() {
+            for msg in ready.take_messages() {
+                println!("Sending message: {:?}", msg);
+            }
+        }
+        
+        let mut _last_apply_index = 0;
+        for entry in ready.take_committed_entries() {
+
+         _last_apply_index = entry.index;
+
+         if entry.data.is_empty() {
+             continue;
+         }
+
+         match entry.get_entry_type() {
+            EntryType::EntryNormal => handle_normal(entry),
+            EntryType::EntryConfChange => handle_conf_change(entry),
+            EntryType::EntryConfChangeV2 => handle_conf_change_v2(entry),
+         }
+        }
+    }
+}
