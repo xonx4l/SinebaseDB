@@ -1,14 +1,17 @@
 use clap::Parser;
 
-#[derive(Parser, Debug)]
+#[derive(Parser)]
+#[clap(version, about)]
 pub struct args {
     
-    pub id : i64,
+    #[clap(short, long)]
+    pub boostrap: Option<String>,
 
-    pub peers :String,
+    #[clap(short, long)]
+    pub url: String,
 
-    pub http_addr : String,
+}
 
-    pub raft_addr : String,
-
+pub fn parse_args() -> Args {
+    Args::parse()
 }
