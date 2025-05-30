@@ -107,3 +107,15 @@ async fn run_consensus_receiver_loop(node: &mut RawNode<MemStorage>) {
         }
     }
 }
+
+fn handle_normal(entry: Entry) {
+    println!("Handle normal entry: {:?}", entry);
+}
+
+fn handle_conf_change(entry: Entry) {
+    println!("Handle conf change entry: {:?}", entry);
+}
+
+fn handle_conf_change_v2(entry: Entry) {
+    println!("Handle conf change v2 entry: {:?}", entry);
+}
